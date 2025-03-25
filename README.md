@@ -365,6 +365,8 @@ Run App
 python Zero_Shot_App.py
 ```
 </details>
+
+To get started quickly, you can also explore our [Online App](https://huggingface.co/spaces/luoweibetter/INP-Former).
 <p align="center">
   <img src="assets/app.png"  width="100%">
 </p>
