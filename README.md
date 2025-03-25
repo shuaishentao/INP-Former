@@ -1,9 +1,4 @@
 # INP-Former (CVPR2025)
-<<<<<<< HEAD
-The official implementation of “Exploring Intrinsic Normal Prototypes within a Single Image for Universal Anomaly Detection”     
-🚀 **Coming Soon!**
-=======
-
 The official implementation of “[Exploring Intrinsic Normal Prototypes within a Single Image for Universal Anomaly Detection](https://arxiv.org/pdf/2503.02424)”. This repo is created by Wei Luo.
 
 ## Abstract
@@ -388,4 +383,3 @@ If our work is helpful for your research, please consider citing:
 ```
 ## Contact
 If you have any questions about our work, please do not hesitate to contact [luow23@mails.tsinghua.edu.cn](mailto:luow23@mails.tsinghua.edu.cn).
->>>>>>> 4deba14 (first commit)
