@@ -22,30 +22,23 @@ from adeval import  EvalAccumulatorCuda
 
 
 def ader_evaluator(pr_px, pr_sp, gt_px, gt_sp, use_metrics = ['I-AUROC', 'I-AP', 'I-F1_max','P-AUROC', 'P-AP', 'P-F1_max', 'AUPRO']):
-    gt_px = gt_px
-    pr_px = pr_px
-
     if len(gt_px.shape) == 4:
         gt_px = gt_px.squeeze(1)
     if len(pr_px.shape) == 4:
         pr_px = pr_px.squeeze(1)
-    # cls_names = results['cls_names'][idxes]
-    # anomalys = results['anomalys'][idxes]
-    # normalization for pixel-level evaluations
-    # pr_px_norm = (pr_px - pr_px.min()) / (pr_px.max() - pr_px.min())
-    # gt_sp = gt_px.max(axis=(1, 2))
-
+        
     score_min = min(pr_sp)
     score_max = max(pr_sp)
-    # score_min = min(pr_sp) -
-    # score_max = max(pr_sp)
     anomap_min = pr_px.min()
     anomap_max = pr_px.max()
+    
     accum = EvalAccumulatorCuda(score_min, score_max, anomap_min, anomap_max, skip_pixel_aupro=False, nstrips=200)
     accum.add_anomap_batch(torch.tensor(pr_px).cuda(non_blocking=True),
                            torch.tensor(gt_px.astype(np.uint8)).cuda(non_blocking=True))
-    for i in range(torch.tensor(pr_px).size(0)):
-        accum.add_image(torch.tensor(pr_sp[i]), torch.tensor(gt_sp[i]))
+    
+    # for i in range(torch.tensor(pr_px).size(0)):
+    #     accum.add_image(torch.tensor(pr_sp[i]), torch.tensor(gt_sp[i]))
+    
     metrics = accum.summary()
     metric_results = {}
     for metric in use_metrics:
