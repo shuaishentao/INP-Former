@@ -6,6 +6,7 @@
 
 ## 🔔 Update
 > Inspired by [ADer](https://github.com/zhangzjn/ADer), we improved our testing code to accelerate the computation of metrics during the testing process, particularly AUPRO.
+
 > To ensure a clean runtime interface, we have addressed the "UserWarning: xFormers is not available" issue.
 
 ## Abstract
