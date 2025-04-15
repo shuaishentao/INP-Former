@@ -24,7 +24,8 @@ Create a new conda environment and install required packages.
 conda create -n INP python=3.8.12
 conda activate INP
 pip install -r requirements.txt
-pip install gradio # Optional, for Zero Shot App 
+pip install gradio # Optional, for Zero Shot App
+pip install onnx==1.15.0 onnxruntime-gpu==1.15.0 onnxsim # for export onnx file
 ```
 Experiments are conducted on NVIDIA GeForce RTX 4090 (24GB). Same GPU and package version are recommended. 
 
