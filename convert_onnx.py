@@ -11,8 +11,6 @@ from models import vit_encoder
 from models.uad import INP_Former
 from models.vision_transformer import Mlp, Aggregation_Block, Prototype_Block
 
-import argparse
-
 def set_model(args):
     setup_seed(1)
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
