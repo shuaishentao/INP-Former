@@ -102,21 +102,26 @@ class ONNX_inference:
 
         return session, inputs, outputs
 
-
+from PIL import Image
 def pre_process(image_path, input_size):
-    mean = np.array([0.485, 0.456, 0.406])
-    std = np.array([0.229, 0.224, 0.225])
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32).reshape(3, 1, 1)
+    std = np.array([0.229, 0.224, 0.225], dtype=np.float32).reshape(3, 1, 1)
+    image = Image.open(image_path)
+    image = image.resize((input_size, input_size), Image.BILINEAR)
+    img_array = np.array(image, dtype=np.float32) / 255.0
+    img_array = img_array.transpose(2, 0, 1)
+    img_array = (img_array - mean) / std
+    img_array = np.expand_dims(img_array, axis=0).astype(np.float32)
+    # image = cv2.imread(image_path)
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-    image = cv2.imread(image_path)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # modified_image = cv2.resize(image, (input_size, input_size), interpolation=cv2.INTER_LINEAR)
+    # modified_image = modified_image.astype(np.float32) / 255.0
+    # modified_image = (modified_image - mean) / std
+    # modified_image = np.transpose(modified_image, (2, 0, 1))
+    # modified_image = np.expand_dims(modified_image, axis=0).astype(np.float32)
 
-    modified_image = cv2.resize(image, (input_size, input_size), interpolation=cv2.INTER_NEAREST)
-    modified_image = modified_image.astype(np.float32) / 255.0
-    modified_image = (modified_image - mean) / std
-    modified_image = np.transpose(modified_image, (2, 0, 1))
-    modified_image = np.expand_dims(modified_image, axis=0).astype(np.float32)
-
-    return modified_image
+    return img_array
 
 def visualize(output_folder_path, image_path, anomaly_map_image):
     origin_image = cv2.imread(image_path)
@@ -191,10 +196,10 @@ if __name__ == '__main__':
     os.environ['CUDA_LAUNCH_BLOCKING'] = "1"
     parser = argparse.ArgumentParser(description='ONNX Inference for Anomaly Detection')
     
-    parser.add_argument('--image_folder_path', type=str, required=True, help='Path to input image folder')
-    parser.add_argument('--output_folder_path', type=str, required=True, help='Path to save visualized outputs')
-    parser.add_argument('--onnx_model_path', type=str, required=True, help='Path to the ONNX model file')
-    parser.add_argument('--input_size', type=int, default=392, help='Input size for model inference')
+    parser.add_argument('--image_folder_path', type=str, default='/home/tao/dataset/mvtec/test_onnx/test/color', help='Path to input image folder')
+    parser.add_argument('--output_folder_path', type=str, default='/home/tao/code/anomalyDetection/INP-Former/outputs', help='Path to save visualized outputs')
+    parser.add_argument('--onnx_model_path', type=str, default='/home/tao/code/anomalyDetection/INP-Former/saved_results/INP-Former-Single-Class_dataset=MVTec-AD_Encoder=dinov2reg_vit_base_14_Resize=448_Crop=448_INP_num=6/carpet/model.onnx', help='Path to the ONNX model file')
+    parser.add_argument('--input_size', type=int, default=448, help='Input size for model inference')
     parser.add_argument('--max_ratio', type=float, default=0.01, help='Max ratio used for score thresholding')
     parser.add_argument('--visualize_output', action='store_true', help='Flag to visualize the results')
 
